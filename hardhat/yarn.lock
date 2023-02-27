@@ -496,6 +496,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@noble/curves@npm:^0.7.3":
+  version: 0.7.3
+  resolution: "@noble/curves@npm:0.7.3"
+  dependencies:
+    "@noble/hashes": "npm:1.2.0"
+  checksum: b214f2ac2119ee5eeb3c568fd4939c1d5cb5cbc273dfcd898e6e5311933b773feb525db8e1834bcb3e42629fc29395615248b0372839b273b1b87539469b01be
+  languageName: node
+  linkType: hard
+
 "@noble/hashes@npm:1.2.0, @noble/hashes@npm:~1.2.0":
   version: 1.2.0
   resolution: "@noble/hashes@npm:1.2.0"
@@ -3653,6 +3662,7 @@ __metadata:
     "@ethersproject/bignumber": "npm:^5.7.0"
     "@ethersproject/bytes": "npm:^5.7.0"
     "@ethersproject/providers": "npm:^5.7.2"
+    "@noble/curves": "npm:^0.7.3"
     "@nomicfoundation/hardhat-chai-matchers": "npm:^1.0.4"
     "@nomicfoundation/hardhat-network-helpers": "npm:^1.0.6"
     "@nomicfoundation/hardhat-toolbox": "npm:^2.0.0"
