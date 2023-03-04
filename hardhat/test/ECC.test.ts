@@ -1,3 +1,6 @@
+import { Wallet } from "ethers";
+import { ethers } from "hardhat";
+
 const CURVE = {
   P: 2n ** 256n - 2n ** 32n - 977n,
   n: 2n ** 256n - 432420386565659656852420866394968145599n,
@@ -73,17 +76,17 @@ function invert(number: bigint, modulo: bigint = CURVE.P): bigint {
 }
 
 // G x, y values taken from official secp256k1 document
-CURVE.Gx =
-  55066263022277343669578718895168534326250603453777594175500187360389116729240n;
-CURVE.Gy =
-  32670510020758816978083085130507043184471273380659243275938904335757337482424n;
-const G = new Point(CURVE.Gx, CURVE.Gy);
+// CURVE.Gx =
+//   55066263022277343669578718895168534326250603453777594175500187360389116729240n;
+// CURVE.Gy =
+//   32670510020758816978083085130507043184471273380659243275938904335757337482424n;
+// const G = new Point(CURVE.Gx, CURVE.Gy);
 
-// Example
-function getPublicKey(privKey: bigint) {
-  return G.multiplyDA(privKey);
-}
-console.log(getPublicKey(140n));
+// // Example
+// function getPublicKey(privKey: bigint) {
+//   return G.multiplyDA(privKey);
+// }
+// console.log(getPublicKey(140n));
 
 class XY {
   constructor(public x: bigint, public y: bigint) {}
@@ -120,6 +123,12 @@ describe("ECC", function () {
     console.warn("b:", b, ", time:", new Date().getTime() - preTime2);
   });
 
-  it("Test secp256k1", async () => {
+  it("Test secp256k1", async () => {});
+
+  it("Test ECDSA sign", async () => {
+    const signers = await ethers.getSigners();
+    const signedStr = await signers[0].signMessage("a");
+    console.warn("signers[0].address:", signers[0].address);
+    console.warn("signedStr:", signedStr);
   });
 });
