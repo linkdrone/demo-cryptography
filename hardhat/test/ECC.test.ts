@@ -1,4 +1,4 @@
-import { Wallet } from "ethers";
+import { BigNumber, Wallet } from "ethers";
 import { ethers } from "hardhat";
 
 const CURVE = {
@@ -127,13 +127,35 @@ describe("ECC", function () {
 
   it("Test ECDSA sign", async () => {
     const signers = await ethers.getSigners();
-    const signedStr1 = await signers[0].signMessage("a");
+    const msg = "a";
+
+    console.warn("signers[0].address:", signers[0].address);
+
+    const signedStr1 = await signers[0].signMessage(msg);
     console.warn("signedStr1:", signedStr1);
 
-    const signedStr2 = await signers[0].signMessage("a");
+    const signedStr2 = await signers[0].signMessage(msg);
     console.warn("signedStr2:", signedStr2);
 
     const buffer2 = Buffer.from(signedStr2.slice(2), "hex");
     console.warn("buffer2.length", buffer2.length);
+
+    // const msgHash = ethers.utils.sha256(
+    //   ethers.utils.arrayify("0x" + Buffer.from(msg).toString("hex"))
+    // );
+    // const msgHash = ethers.utils.keccak256(
+    //   ethers.utils.arrayify("0x" + Buffer.from(msg).toString("hex"))
+    // );
+    const msgHash = ethers.utils.hashMessage(msg)
+    console.warn("msgHash:", msgHash);
+
+    const publicKey = ethers.utils.recoverPublicKey(msgHash, signedStr1);
+    console.warn("publicKey:", publicKey);
+
+    // const computedAddress = ethers.utils.keccak256(
+    //   "0x" + publicKey.substring(4)
+    // );
+    const computedAddress = ethers.utils.recoverAddress(msgHash, signedStr1);
+    console.warn("computedAddress:", computedAddress);
   });
 });
