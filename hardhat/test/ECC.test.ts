@@ -127,8 +127,13 @@ describe("ECC", function () {
 
   it("Test ECDSA sign", async () => {
     const signers = await ethers.getSigners();
-    const signedStr = await signers[0].signMessage("a");
-    console.warn("signers[0].address:", signers[0].address);
-    console.warn("signedStr:", signedStr);
+    const signedStr1 = await signers[0].signMessage("a");
+    console.warn("signedStr1:", signedStr1);
+
+    const signedStr2 = await signers[0].signMessage("a");
+    console.warn("signedStr2:", signedStr2);
+
+    const buffer2 = Buffer.from(signedStr2.slice(2), "hex");
+    console.warn("buffer2.length", buffer2.length);
   });
 });
