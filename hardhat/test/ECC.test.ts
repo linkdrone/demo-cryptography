@@ -152,9 +152,9 @@ describe("ECC", function () {
     const publicKey = ethers.utils.recoverPublicKey(msgHash, signedStr1);
     console.warn("publicKey:", publicKey);
 
-    // const computedAddress = ethers.utils.keccak256(
+    // const computedAddress = '0x' + ethers.utils.keccak256(
     //   "0x" + publicKey.substring(4)
-    // );
+    // ).substring(26);
     const computedAddress = ethers.utils.recoverAddress(msgHash, signedStr1);
     console.warn("computedAddress:", computedAddress);
   });
