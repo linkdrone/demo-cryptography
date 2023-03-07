@@ -1,5 +1,6 @@
-import { BigNumber, Wallet } from "ethers";
 import { ethers } from "hardhat";
+
+import { BigNumber } from "bignumber.js";
 
 const CURVE = {
   P: 2n ** 256n - 2n ** 32n - 977n,
@@ -88,42 +89,32 @@ function invert(number: bigint, modulo: bigint = CURVE.P): bigint {
 // }
 // console.log(getPublicKey(140n));
 
-class XY {
-  constructor(public x: bigint, public y: bigint) {}
-}
-
-const xy = new XY(1n, 2n);
-console.warn("xy.x:", xy.x);
-console.warn("xy.y:", xy.y);
-
 describe("ECC", function () {
   this.timeout(2000000);
 
   before(async function () {});
 
-  it("Test mod and bit", async () => {
-    const num = 999999909;
+  // it("Test mod and bit", async () => {
+  //   const num = 999999909;
 
-    const preTime = new Date().getTime();
-    let a = 0;
-    for (let i = 0; i < num; i++) {
-      if (i % 2) {
-        a = 1;
-      }
-    }
-    console.warn("a:", a, ", time:", new Date().getTime() - preTime);
+  //   const preTime = new Date().getTime();
+  //   let a = 0;
+  //   for (let i = 0; i < num; i++) {
+  //     if (i % 2) {
+  //       a = 1;
+  //     }
+  //   }
+  //   console.warn("a:", a, ", time:", new Date().getTime() - preTime);
 
-    const preTime2 = new Date().getTime();
-    let b = 0;
-    for (let i = 0; i < num; i++) {
-      if (i & 1) {
-        b = 1;
-      }
-    }
-    console.warn("b:", b, ", time:", new Date().getTime() - preTime2);
-  });
-
-  it("Test secp256k1", async () => {});
+  //   const preTime2 = new Date().getTime();
+  //   let b = 0;
+  //   for (let i = 0; i < num; i++) {
+  //     if (i & 1) {
+  //       b = 1;
+  //     }
+  //   }
+  //   console.warn("b:", b, ", time:", new Date().getTime() - preTime2);
+  // });
 
   it("Test ECDSA sign", async () => {
     const signers = await ethers.getSigners();
@@ -146,7 +137,7 @@ describe("ECC", function () {
     // const msgHash = ethers.utils.keccak256(
     //   ethers.utils.arrayify("0x" + Buffer.from(msg).toString("hex"))
     // );
-    const msgHash = ethers.utils.hashMessage(msg)
+    const msgHash = ethers.utils.hashMessage(msg);
     console.warn("msgHash:", msgHash);
 
     const publicKey = ethers.utils.recoverPublicKey(msgHash, signedStr1);
@@ -157,5 +148,40 @@ describe("ECC", function () {
     // ).substring(26);
     const computedAddress = ethers.utils.recoverAddress(msgHash, signedStr1);
     console.warn("computedAddress:", computedAddress);
+  });
+
+  it("Test RSA", async () => {
+    const math = require("mathjs");
+
+    const startNumber = 1000000000000000;
+    const total = 10000000;
+
+    let startTime1 = new Date().getTime();
+    let y1: any;
+    for (let i = 0, n = startNumber; i < total; i++, n++) {
+      y1 = math.pow(n, 20);
+    }
+    console.log("now - startTime1:", new Date().getTime() - startTime1);
+
+    let startTime2 = new Date().getTime();
+    let y2: any;
+    for (let i = 0, n = startNumber; i < total; i++, n++) {
+      y2 = math.log(n, 20);
+    }
+    console.log("now - startTime2:", new Date().getTime() - startTime2);
+
+    let startTime1_2 = new Date().getTime();
+    let y1_2: any;
+    for (let i = 0, n = startNumber; i < total; i++, n++) {
+      y1_2 = math.pow(n, 200);
+    }
+    console.log("now - startTime1_2:", new Date().getTime() - startTime1_2);
+
+    let startTime2_2 = new Date().getTime();
+    let y2_2: any;
+    for (let i = 0, n = startNumber; i < total; i++, n++) {
+      y2_2 = math.log(n, 200);
+    }
+    console.log("now - startTime2_2:", new Date().getTime() - startTime2_2);
   });
 });
